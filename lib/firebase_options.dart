@@ -50,7 +50,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
     projectId: 'naseem-app',
     storageBucket: 'naseem-app.appspot.com',
-    iosBundleId: 'com.naseem.app',
+    iosBundleId: 'com.sarbany444.asan',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -59,7 +59,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
     projectId: 'naseem-app',
     storageBucket: 'naseem-app.appspot.com',
-    iosBundleId: 'com.naseem.app',
+    iosBundleId: 'com.sarbany444.asan',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(

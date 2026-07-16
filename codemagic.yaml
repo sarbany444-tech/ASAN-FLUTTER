@@ -1,0 +1,91 @@
+# Codemagic CI/CD — ASAN Flutter (iOS IPA + optional TestFlight)
+# Docs: https://docs.codemagic.io/yaml-quick-start/building-a-flutter-app/
+
+workflows:
+  ios-release:
+    name: ASAN iOS Release IPA
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+
+      # Set these in Codemagic UI → Application → Environment variables
+      # (or use Codemagic code signing UI which injects them automatically)
+      vars:
+        BUNDLE_ID: "com.sarbany444.asan"
+        APP_STORE_APP_ID: ""  # numeric App Store Connect app id (optional, for TestFlight)
+      # Required for automatic code signing / TestFlight (mark as Secret in UI):
+      # APP_STORE_CONNECT_ISSUER_ID
+      # APP_STORE_CONNECT_KEY_IDENTIFIER
+      # APP_STORE_CONNECT_PRIVATE_KEY   (contents of AuthKey_XXXX.p8)
+      # CERTIFICATE_PRIVATE_KEY        (RSA private key for certificate)
+
+      groups:
+        # Create an env group in Codemagic named "app_store_credentials"
+        # containing the secrets above, then attach it here.
+        - app_store_credentials
+
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+          source: true
+
+    scripts:
+      - name: Set up local Flutter properties
+        script: |
+          flutter --version
+          flutter doctor -v
+
+      - name: Get Flutter packages
+        script: |
+          flutter pub get
+
+      - name: Install CocoaPods dependencies
+        script: |
+          cd ios
+          pod repo update
+          pod install
+          cd ..
+
+      - name: Set up code signing (App Store / Ad Hoc)
+        script: |
+          # Uses Codemagic automatic signing when Apple Developer Portal
+          # credentials + CERTIFICATE_PRIVATE_KEY are configured.
+          keychain initialize
+          app-store-connect fetch-signing-files "$BUNDLE_ID" \
+            --type ios_app_store \
+            --create
+          keychain add-certificates
+          xcode-project use-profiles
+
+      - name: Build IPA
+        script: |
+          flutter build ipa --release \
+            --export-options-plist=/Users/builder/export_options.plist
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - flutter_drive.log
+
+    publishing:
+      email:
+        recipients:
+          - sarbany444@gmail.com
+        notify:
+          success: true
+          failure: true
+
+      # Uncomment after APP_STORE_APP_ID is set and API key works:
+      # app_store_connect:
+      #   auth: integration
+      #   # Or use API key env vars (Issuer ID / Key ID / private key)
+      #   submit_to_testflight: true
+      #   beta_groups:
+      #     - Internal Testers
