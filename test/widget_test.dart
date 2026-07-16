@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:naseem/core/constants/content_policy.dart';
-import 'package:naseem/services/moderation_service.dart';
+import 'package:asan/core/constants/content_policy.dart';
+import 'package:asan/services/moderation_service.dart';
 
 void main() {
   test('Moderation rejects prohibited keywords', () {

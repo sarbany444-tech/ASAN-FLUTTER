@@ -1,0 +1,5 @@
+# Keep this file out of git. Copy to key.properties and fill real values.
+storePassword=YOUR_STORE_PASSWORD
+keyPassword=YOUR_KEY_PASSWORD
+keyAlias=asan
+storeFile=asan-upload-keystore.jks

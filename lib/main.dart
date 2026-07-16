@@ -1,7 +1,10 @@
+import 'dart:ui' show PointerDeviceKind;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'services/firebase_service.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -11,6 +14,8 @@ void main() {
       systemNavigationBarIconBrightness: Brightness.light,
     ),
   );
+
+  await FirebaseService.initialize();
   runApp(const AsanApp());
 }
 
@@ -23,6 +28,7 @@ class AsanApp extends StatelessWidget {
     return MaterialApp(
       title: 'ASAN',
       debugShowCheckedModeBanner: false,
+      scrollBehavior: const _AsanScrollBehavior(),
       theme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.dark,
@@ -38,6 +44,19 @@ class AsanApp extends StatelessWidget {
       home: const AsanShell(),
     );
   }
+}
+
+/// Enables drag scrolling with mouse/trackpad on web & desktop.
+class _AsanScrollBehavior extends MaterialScrollBehavior {
+  const _AsanScrollBehavior();
+
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+        PointerDeviceKind.trackpad,
+        PointerDeviceKind.stylus,
+      };
 }
 
 // ─── Palette (ASAN premium dark / neon) ───────────────────────────────────────

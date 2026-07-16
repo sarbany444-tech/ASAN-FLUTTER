@@ -66,5 +66,15 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>ASAN needs camera access so you can take photos for your listings.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>ASAN needs photo library access so you can add images to listings.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>ASAN may save images to your photo library.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>ASAN uses your location to show nearby listings and set listing location.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>ASAN needs microphone access for video or voice features.</string>
 </dict>
 </plist>

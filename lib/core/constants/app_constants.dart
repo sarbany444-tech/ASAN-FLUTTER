@@ -1,8 +1,8 @@
 class AppConstants {
   AppConstants._();
 
-  static const String appName = 'Naseem';
-  static const String appTagline = 'Learn. Connect. Grow.';
+  static const String appName = 'ASAN';
+  static const String appTagline = 'Discover. Connect. Grow.';
 
   // Platform collections
   static const String usersCollection = 'users';
@@ -59,6 +59,8 @@ class AppConstants {
 
   static const supportedLocales = ['en', 'ar', 'ku'];
 
-  /// Set to true to skip splash/login and open MainShell for UI development.
-  static const bool bypassAuthForDevelopment = true;
+  /// Production default: false. Enable locally with:
+  /// `flutter run --dart-define=BYPASS_AUTH=true`
+  static const bool bypassAuthForDevelopment =
+      bool.fromEnvironment('BYPASS_AUTH', defaultValue: false);
 }
