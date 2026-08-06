@@ -58,6 +58,8 @@
 - User profiles with verified scholar badges
 - Search across approved content
 - Multi-language support: **English**, **Arabic**, **Kurdish**
+- Marketplace coverage: **Europe & Middle East** (countries, cities, local currencies)
+  — see [docs/REGIONS.md](docs/REGIONS.md)
 
 ### Islamic Tools
 - Prayer times (GPS-based, Muslim World League calculation)
