@@ -163,7 +163,53 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
-    // Monetization
+    // ── ASAN Marketplace monetization (Firebase-remote) ──────────────────
+    // Admins toggle subscriptions, prices, limits, and campaigns without
+    // shipping an app update. Clients always fall back to free launch mode.
+
+    match /config/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /analytics/{docId} {
+      allow read: if isAdmin() || isModerator();
+      allow create, update: if isSignedIn();
+      allow delete: if isAdmin();
+    }
+
+    match /revenue_events/{eventId} {
+      allow read: if isAdmin()
+        || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow create: if isSignedIn()
+        && request.resource.data.userId == request.auth.uid;
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /business_interest/{docId} {
+      allow read: if isAdmin() || isModerator();
+      allow create: if isSignedIn()
+        && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    match /listing_events/{eventId} {
+      allow read: if isAdmin() || isModerator();
+      allow create: if isSignedIn()
+        && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    match /listings/{listingId} {
+      allow read: if true;
+      allow create: if isSignedIn()
+        && request.resource.data.sellerId == request.auth.uid;
+      allow update, delete: if isSignedIn()
+        && (resource.data.sellerId == request.auth.uid || isModerator());
+    }
+
+    // Monetization (legacy creator donations — kept for compatibility)
     match /donations/{donationId} {
       allow read: if isSignedIn()
         && (resource.data.donorId == request.auth.uid
@@ -175,9 +221,12 @@ service cloud.firestore {
     match /subscriptions/{subId} {
       allow read: if isSignedIn()
         && (resource.data.subscriberId == request.auth.uid
-            || resource.data.creatorId == request.auth.uid);
+            || resource.data.creatorId == request.auth.uid
+            || isAdmin());
       allow create: if isActiveUser()
         && request.resource.data.subscriberId == request.auth.uid;
+      allow update: if isAdmin()
+        || (isSignedIn() && resource.data.subscriberId == request.auth.uid);
     }
 
     match /courses/{courseId} {

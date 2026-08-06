@@ -2,6 +2,10 @@ import 'dart:ui' show PointerDeviceKind;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'core/constants/marketplace_regions.dart';
+import 'core/monetization/marketplace_category.dart';
+import 'screens/listings/create_listing_screen.dart';
+import 'screens/monetization/business_plans_screen.dart';
 import 'services/firebase_service.dart';
 
 void main() async {
@@ -91,6 +95,8 @@ class Listing {
     required this.accent,
     required this.icon,
     this.ago = 'Today',
+    this.countryCode,
+    this.currencyCode,
   });
 
   final String title;
@@ -100,40 +106,70 @@ class Listing {
   final Color accent;
   final IconData icon;
   final String ago;
+  final String? countryCode;
+  final String? currencyCode;
 }
 
-const featuredListings = <Listing>[
+final featuredListings = <Listing>[
   Listing(
-    title: 'Modern House',
-    price: '£425,000',
-    location: 'Manchester',
-    category: 'Property',
+    title: 'Modern Apartment',
+    price: MarketplaceRegions.eur.formatListing(425000),
+    location: 'Berlin, Germany',
+    category: 'Real Estate',
     accent: AsanColors.green,
     icon: Icons.home_rounded,
+    countryCode: 'DE',
+    currencyCode: 'EUR',
   ),
   Listing(
     title: 'BMW 320d M Sport',
-    price: '£14,500',
-    location: 'London, Ealing',
+    price: MarketplaceRegions.gbp.formatListing(14500),
+    location: 'London, United Kingdom',
     category: 'Cars',
     accent: AsanColors.blue,
     icon: Icons.directions_car_rounded,
+    countryCode: 'GB',
+    currencyCode: 'GBP',
   ),
   Listing(
     title: 'iPhone 14 Pro',
-    price: '£320',
-    location: 'Birmingham',
-    category: 'Electronics',
+    price: MarketplaceRegions.aed.formatListing(3200),
+    location: 'Dubai, United Arab Emirates',
+    category: 'Buy & Sell',
     accent: AsanColors.purple,
     icon: Icons.phone_iphone_rounded,
+    countryCode: 'AE',
+    currencyCode: 'AED',
   ),
   Listing(
-    title: 'Nike Hoodie',
-    price: '£45',
-    location: 'Leeds',
-    category: 'Clothing',
+    title: 'Private Tutor — Math',
+    price: MarketplaceRegions.iqd.formatListing(25000),
+    location: 'Erbil, Iraq',
+    category: 'Teachers',
+    accent: AsanColors.cyan,
+    icon: Icons.school_rounded,
+    countryCode: 'IQ',
+    currencyCode: 'IQD',
+  ),
+  Listing(
+    title: 'Studio Flat near Old Town',
+    price: MarketplaceRegions.tryCurrency.formatListing(18500),
+    location: 'Istanbul, Turkey',
+    category: 'Real Estate',
     accent: AsanColors.pink,
-    icon: Icons.checkroom_rounded,
+    icon: Icons.apartment_rounded,
+    countryCode: 'TR',
+    currencyCode: 'TRY',
+  ),
+  Listing(
+    title: 'Family Restaurant Lease',
+    price: MarketplaceRegions.sar.formatListing(120000),
+    location: 'Riyadh, Saudi Arabia',
+    category: 'Restaurants',
+    accent: AsanColors.coral,
+    icon: Icons.restaurant_rounded,
+    countryCode: 'SA',
+    currencyCode: 'SAR',
   ),
 ];
 
@@ -147,15 +183,16 @@ class CategoryChip {
 
 const homeCategories = <CategoryChip>[
   CategoryChip('all', 'All', Icons.apps_rounded, AsanColors.gold),
-  CategoryChip('electronics', 'Electronics', Icons.phone_iphone_rounded, AsanColors.purple),
+  CategoryChip('buy_and_sell', 'Buy & Sell', Icons.shopping_bag_rounded, AsanColors.purple),
   CategoryChip('cars', 'Cars', Icons.directions_car_rounded, AsanColors.blue),
-  CategoryChip('property', 'Property', Icons.home_rounded, AsanColors.green),
-  CategoryChip('clothing', 'Clothing', Icons.checkroom_rounded, AsanColors.pink),
-  CategoryChip('others', 'Others', Icons.grid_view_rounded, AsanColors.gold),
+  CategoryChip('real_estate', 'Real Estate', Icons.home_rounded, AsanColors.green),
+  CategoryChip('jobs', 'Jobs', Icons.work_rounded, AsanColors.cyan),
+  CategoryChip('services', 'Services', Icons.handyman_rounded, AsanColors.coral),
 ];
 
 class BrowseCategory {
-  const BrowseCategory(this.label, this.icon, this.accent, this.count);
+  const BrowseCategory(this.id, this.label, this.icon, this.accent, this.count);
+  final String id;
   final String label;
   final IconData icon;
   final Color accent;
@@ -163,9 +200,18 @@ class BrowseCategory {
 }
 
 const browseCategories = <BrowseCategory>[
-  BrowseCategory('Jobs', Icons.work_outline_rounded, AsanColors.cyan, 128),
-  BrowseCategory('Services & Handymen', Icons.handyman_outlined, AsanColors.coral, 86),
-  BrowseCategory('Others', Icons.grid_view_rounded, AsanColors.gold, 54),
+  BrowseCategory('jobs', 'Jobs', Icons.work_outline_rounded, AsanColors.cyan, 0),
+  BrowseCategory('services', 'Services', Icons.handyman_outlined, AsanColors.coral, 0),
+  BrowseCategory('companies', 'Companies', Icons.apartment_rounded, AsanColors.blue, 0),
+  BrowseCategory('shops', 'Shops', Icons.storefront_rounded, AsanColors.pink, 0),
+  BrowseCategory('restaurants', 'Restaurants', Icons.restaurant_rounded, AsanColors.coral, 0),
+  BrowseCategory('hotels', 'Hotels', Icons.hotel_rounded, AsanColors.purple, 0),
+  BrowseCategory('doctors', 'Doctors', Icons.medical_services_rounded, AsanColors.green, 0),
+  BrowseCategory('teachers', 'Teachers', Icons.school_rounded, AsanColors.cyan, 0),
+  BrowseCategory('courses', 'Courses', Icons.menu_book_rounded, AsanColors.gold, 0),
+  BrowseCategory('events', 'Events', Icons.event_rounded, AsanColors.pink, 0),
+  BrowseCategory('freelancers', 'Freelancers', Icons.handshake_rounded, AsanColors.blue, 0),
+  BrowseCategory('buy_and_sell', 'Buy & Sell', Icons.shopping_bag_outlined, AsanColors.purple, 0),
 ];
 
 // ─── Shell + bottom nav ───────────────────────────────────────────────────────
@@ -179,8 +225,44 @@ class AsanShell extends StatefulWidget {
 
 class _AsanShellState extends State<AsanShell> {
   int _tab = 0;
+  final List<Listing> _listings = List<Listing>.from(featuredListings);
 
   static const _titles = ['Home', 'Search', 'Add Post', 'Inbox', 'Profile'];
+
+  Future<void> _openCreateListing() async {
+    final draft = await Navigator.of(context).push<CreateListingDraft>(
+      MaterialPageRoute(
+        builder: (_) => const CreateListingScreen(),
+      ),
+    );
+    if (draft == null || !mounted) return;
+
+    setState(() {
+      _listings.insert(
+        0,
+        Listing(
+          title: draft.title,
+          price: draft.priceLabel,
+          location: draft.locationLabel,
+          category: draft.category.label,
+          accent: AsanColors.gold,
+          icon: Icons.sell_rounded,
+          countryCode: draft.countryCode,
+          currencyCode: draft.currencyCode,
+        ),
+      );
+      _tab = 0;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Listed in ${draft.locationLabel} · ${draft.currencyCode}',
+        ),
+        backgroundColor: AsanColors.navyLight,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -201,26 +283,16 @@ class _AsanShellState extends State<AsanShell> {
                 4 => 3, // Profile
                 _ => 0,
               },
-              children: const [
-                HomeScreen(),
-                _PlaceholderScreen(
-                  title: 'Search',
-                  subtitle: 'Find cars, homes, jobs & more',
-                  icon: Icons.search_rounded,
-                  accent: AsanColors.cyan,
-                ),
-                _PlaceholderScreen(
+              children: [
+                HomeScreen(listings: _listings),
+                RegionBrowseScreen(listings: _listings),
+                const _PlaceholderScreen(
                   title: 'Inbox',
                   subtitle: 'Messages from buyers & sellers',
                   icon: Icons.chat_bubble_outline_rounded,
                   accent: AsanColors.pink,
                 ),
-                _PlaceholderScreen(
-                  title: 'Profile',
-                  subtitle: 'Your listings, saves & settings',
-                  icon: Icons.person_outline_rounded,
-                  accent: AsanColors.gold,
-                ),
+                const ProfileTabScreen(),
               ],
             ),
           ),
@@ -230,13 +302,7 @@ class _AsanShellState extends State<AsanShell> {
         currentIndex: _tab,
         onTap: (i) {
           if (i == 2) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Add Post — coming soon'),
-                backgroundColor: AsanColors.navyLight,
-                behavior: SnackBarBehavior.floating,
-              ),
-            );
+            _openCreateListing();
             return;
           }
           setState(() => _tab = i);
@@ -460,7 +526,9 @@ class _NavItem extends StatelessWidget {
 // ─── Home (marketplace) ───────────────────────────────────────────────────────
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, required this.listings});
+
+  final List<Listing> listings;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -470,11 +538,11 @@ class _HomeScreenState extends State<HomeScreen> {
   String _activeCategory = 'all';
 
   List<Listing> get _filteredFeatured {
-    if (_activeCategory == 'all') return featuredListings;
+    if (_activeCategory == 'all') return widget.listings;
     final label = homeCategories
         .firstWhere((c) => c.id == _activeCategory, orElse: () => homeCategories.first)
         .label;
-    return featuredListings.where((l) => l.category == label).toList();
+    return widget.listings.where((l) => l.category == label).toList();
   }
 
   @override
@@ -485,6 +553,8 @@ class _HomeScreenState extends State<HomeScreen> {
         const SliverToBoxAdapter(child: _HomeHeader()),
         const SliverToBoxAdapter(child: SizedBox(height: 16)),
         const SliverToBoxAdapter(child: _SearchBar()),
+        const SliverToBoxAdapter(child: SizedBox(height: 10)),
+        const SliverToBoxAdapter(child: _CoverageBanner()),
         const SliverToBoxAdapter(child: SizedBox(height: 18)),
         SliverToBoxAdapter(
           child: _CategoryRow(
@@ -540,6 +610,221 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         const SliverToBoxAdapter(child: SizedBox(height: 120)),
+      ],
+    );
+  }
+}
+
+class _CoverageBanner extends StatelessWidget {
+  const _CoverageBanner();
+
+  @override
+  Widget build(BuildContext context) {
+    final eu = MarketplaceRegions.byRegion(MarketplaceRegionId.europe).length;
+    final me =
+        MarketplaceRegions.byRegion(MarketplaceRegionId.middleEast).length;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        decoration: BoxDecoration(
+          color: AsanColors.glass,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: AsanColors.cyan.withValues(alpha: 0.35)),
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.public_rounded, color: AsanColors.cyan, size: 18),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                'Serving Europe ($eu countries) & Middle East ($me countries)',
+                style: const TextStyle(
+                  color: AsanColors.cream,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Search / browse by Europe or Middle East.
+class RegionBrowseScreen extends StatefulWidget {
+  const RegionBrowseScreen({super.key, required this.listings});
+
+  final List<Listing> listings;
+
+  @override
+  State<RegionBrowseScreen> createState() => _RegionBrowseScreenState();
+}
+
+class _RegionBrowseScreenState extends State<RegionBrowseScreen> {
+  MarketplaceRegionId? _region;
+  String? _countryCode;
+
+  List<Listing> get _filtered {
+    var list = widget.listings;
+    if (_countryCode != null) {
+      list = list.where((l) => l.countryCode == _countryCode).toList();
+    } else if (_region != null) {
+      final codes = MarketplaceRegions.byRegion(_region!)
+          .map((c) => c.code)
+          .toSet();
+      list = list
+          .where((l) => l.countryCode != null && codes.contains(l.countryCode))
+          .toList();
+    }
+    return list;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final countries = _region == null
+        ? MarketplaceRegions.enabledCountries
+        : MarketplaceRegions.byRegion(_region!);
+
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 120),
+      children: [
+        const Text(
+          'Search',
+          style: TextStyle(
+            color: AsanColors.cream,
+            fontSize: 26,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        const SizedBox(height: 6),
+        const Text(
+          'Filter by Europe or Middle East',
+          style: TextStyle(color: AsanColors.muted, fontSize: 13),
+        ),
+        const SizedBox(height: 16),
+        Wrap(
+          spacing: 8,
+          children: [
+            ChoiceChip(
+              label: const Text('All'),
+              selected: _region == null,
+              onSelected: (_) => setState(() {
+                _region = null;
+                _countryCode = null;
+              }),
+              selectedColor: AsanColors.gold.withValues(alpha: 0.25),
+              labelStyle: TextStyle(
+                color: _region == null ? AsanColors.gold : AsanColors.muted,
+              ),
+              backgroundColor: AsanColors.navyLight,
+            ),
+            for (final r in MarketplaceRegionId.values)
+              ChoiceChip(
+                label: Text(r.label),
+                selected: _region == r,
+                onSelected: (_) => setState(() {
+                  _region = r;
+                  _countryCode = null;
+                }),
+                selectedColor: AsanColors.cyan.withValues(alpha: 0.25),
+                labelStyle: TextStyle(
+                  color: _region == r ? AsanColors.cyan : AsanColors.muted,
+                ),
+                backgroundColor: AsanColors.navyLight,
+              ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        SizedBox(
+          height: 40,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: countries.length,
+            separatorBuilder: (_, _) => const SizedBox(width: 8),
+            itemBuilder: (_, i) {
+              final c = countries[i];
+              final selected = _countryCode == c.code;
+              return ChoiceChip(
+                label: Text('${c.name} · ${c.currency.code}'),
+                selected: selected,
+                onSelected: (_) => setState(() {
+                  _countryCode = selected ? null : c.code;
+                }),
+                selectedColor: AsanColors.purple.withValues(alpha: 0.3),
+                labelStyle: TextStyle(
+                  color: selected ? AsanColors.cream : AsanColors.muted,
+                  fontSize: 12,
+                ),
+                backgroundColor: AsanColors.navyLight,
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 20),
+        Text(
+          '${_filtered.length} listings',
+          style: const TextStyle(
+            color: AsanColors.muted,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 12),
+        for (final l in _filtered) ...[
+          Container(
+            margin: const EdgeInsets.only(bottom: 10),
+            padding: const EdgeInsets.all(14),
+            decoration: BoxDecoration(
+              color: AsanColors.glass,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: AsanColors.border),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: l.accent.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(l.icon, color: l.accent),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l.title,
+                        style: const TextStyle(
+                          color: AsanColors.cream,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        '${l.location} · ${l.category}',
+                        style: const TextStyle(
+                          color: AsanColors.muted,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Text(
+                  l.price,
+                  style: const TextStyle(
+                    color: AsanColors.green,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ],
     );
   }
@@ -991,6 +1276,183 @@ class BrowseCategoryTile extends StatelessWidget {
             style: const TextStyle(color: AsanColors.muted, fontSize: 12),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class ProfileTabScreen extends StatelessWidget {
+  const ProfileTabScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(20, 16, 20, 120),
+      children: [
+        const Text(
+          'Profile',
+          style: TextStyle(
+            color: AsanColors.cream,
+            fontSize: 26,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        const SizedBox(height: 6),
+        const Text(
+          'Personal accounts are free. Business plans are Coming Soon.',
+          style: TextStyle(color: AsanColors.muted, fontSize: 13),
+        ),
+        const SizedBox(height: 20),
+        _ProfileActionTile(
+          icon: Icons.workspace_premium_rounded,
+          accent: AsanColors.gold,
+          title: 'Business Plans',
+          subtitle: 'Coming Soon — notify us for every category',
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => const BusinessPlansScreen(),
+              ),
+            );
+          },
+        ),
+        const SizedBox(height: 10),
+        _ProfileActionTile(
+          icon: Icons.verified_outlined,
+          accent: AsanColors.cyan,
+          title: 'Verification',
+          subtitle: 'Free during launch across all categories',
+          onTap: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Verification is free during launch'),
+                backgroundColor: AsanColors.navyLight,
+                behavior: SnackBarBehavior.floating,
+              ),
+            );
+          },
+        ),
+        const SizedBox(height: 10),
+        _ProfileActionTile(
+          icon: Icons.grid_view_rounded,
+          accent: AsanColors.purple,
+          title: 'Categories',
+          subtitle: '${MarketplaceCategory.all.length} marketplace categories',
+          onTap: () {
+            showModalBottomSheet<void>(
+              context: context,
+              backgroundColor: AsanColors.navyLight,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              ),
+              builder: (ctx) {
+                return ListView(
+                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
+                  children: [
+                    const Text(
+                      'ASAN categories',
+                      style: TextStyle(
+                        color: AsanColors.cream,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    for (final c in MarketplaceCategory.all)
+                      ListTile(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(
+                          c.label,
+                          style: const TextStyle(color: AsanColors.cream),
+                        ),
+                        subtitle: Text(
+                          c.id,
+                          style: const TextStyle(
+                            color: AsanColors.muted,
+                            fontSize: 11,
+                          ),
+                        ),
+                      ),
+                  ],
+                );
+              },
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _ProfileActionTile extends StatelessWidget {
+  const _ProfileActionTile({
+    required this.icon,
+    required this.accent,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final Color accent;
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: AsanColors.glass,
+      borderRadius: BorderRadius.circular(18),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(18),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: accent.withValues(alpha: 0.35)),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: accent.withValues(alpha: 0.14),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Icon(icon, color: accent),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        color: AsanColors.cream,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 15,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      subtitle,
+                      style: const TextStyle(
+                        color: AsanColors.muted,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(Icons.chevron_right_rounded, color: AsanColors.muted),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -41,10 +41,12 @@
 - Live streaming architecture (WebRTC/RTMP ready)
 - Live comments and reactions with moderation
 
-### Monetization (Architecture)
-- Donations (sadaqah/zakat)
-- Creator subscriptions
-- Islamic educational courses collection
+### Monetization (ASAN Marketplace)
+- Category-agnostic engine for all 14 marketplace categories
+- Personal (Free) + Business accounts, verification, featured, premium
+- Launch mode: everything free; Business Plans shown as Coming Soon
+- Admin remote control via Firestore `config/monetization` (no app update)
+- See [docs/MONETIZATION.md](docs/MONETIZATION.md)
 
 ---
 
@@ -56,6 +58,8 @@
 - User profiles with verified scholar badges
 - Search across approved content
 - Multi-language support: **English**, **Arabic**, **Kurdish**
+- Marketplace coverage: **Europe & Middle East** (countries, cities, local currencies)
+  — see [docs/REGIONS.md](docs/REGIONS.md)
 
 ### Islamic Tools
 - Prayer times (GPS-based, Muslim World League calculation)

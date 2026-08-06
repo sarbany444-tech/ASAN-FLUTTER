@@ -13,9 +13,11 @@ import '../../screens/islamic/daily_content_screen.dart';
 import '../../screens/islamic/category_section_screen.dart';
 import '../../screens/admin/admin_dashboard_screen.dart';
 import '../../screens/admin/moderator_dashboard_screen.dart';
+import '../../screens/admin/monetization_admin_screen.dart';
 import '../../screens/profile/settings_screen.dart';
 import '../../screens/profile/edit_profile_screen.dart';
 import '../../screens/profile/community_guidelines_screen.dart';
+import '../../screens/monetization/business_plans_screen.dart';
 import '../../screens/video/report_screen.dart';
 import '../../screens/search/search_screen.dart';
 import '../../screens/profile/user_profile_screen.dart';
@@ -156,12 +158,20 @@ class AppRouter {
           builder: (_, _) => const AdminDashboardScreen(),
         ),
         GoRoute(
+          path: '/admin/monetization',
+          builder: (_, _) => const MonetizationAdminScreen(),
+        ),
+        GoRoute(
           path: '/moderator',
           builder: (_, _) => const ModeratorDashboardScreen(),
         ),
         GoRoute(
           path: '/settings',
           builder: (_, _) => const SettingsScreen(),
+        ),
+        GoRoute(
+          path: '/business-plans',
+          builder: (_, _) => const BusinessPlansScreen(),
         ),
         GoRoute(
           path: '/edit-profile',

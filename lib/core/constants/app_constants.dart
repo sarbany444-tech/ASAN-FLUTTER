@@ -40,6 +40,16 @@ class AppConstants {
   static const String draftsCollection = 'drafts';
   static const String creatorAnalyticsCollection = 'creator_analytics';
 
+  // Marketplace monetization (Firebase-remote, no app update required)
+  static const String configCollection = 'config';
+  static const String monetizationConfigDoc = 'monetization';
+  static const String analyticsCollection = 'analytics';
+  static const String platformStatsDoc = 'platform_stats';
+  static const String revenueEventsCollection = 'revenue_events';
+  static const String businessInterestCollection = 'business_interest';
+  static const String listingEventsCollection = 'listing_events';
+  static const String listingsCollection = 'listings';
+
   // Storage paths
   static const String courseVideosPath = 'course_videos';
   static const String coursePdfsPath = 'course_pdfs';

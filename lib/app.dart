@@ -10,6 +10,7 @@ import 'providers/comment_provider.dart';
 import 'providers/feed_provider.dart';
 import 'providers/locale_provider.dart';
 import 'providers/learning_provider.dart';
+import 'providers/monetization_provider.dart';
 import 'providers/social_provider.dart';
 import 'providers/theme_provider.dart';
 
@@ -23,6 +24,7 @@ class NaseemApp extends StatefulWidget {
 class _NaseemAppState extends State<NaseemApp> {
   late final AuthProvider _authProvider;
   late final ThemeProvider _themeProvider;
+  late final MonetizationProvider _monetizationProvider;
   late final GoRouter _router;
 
   @override
@@ -30,6 +32,7 @@ class _NaseemAppState extends State<NaseemApp> {
     super.initState();
     _authProvider = AuthProvider()..init();
     _themeProvider = ThemeProvider()..init();
+    _monetizationProvider = MonetizationProvider()..init();
     _router = AppRouter.router(_authProvider);
   }
 
@@ -40,6 +43,7 @@ class _NaseemAppState extends State<NaseemApp> {
         providers: [
           ChangeNotifierProvider.value(value: _authProvider),
           ChangeNotifierProvider.value(value: _themeProvider),
+          ChangeNotifierProvider.value(value: _monetizationProvider),
           ChangeNotifierProvider(create: (_) => LearningProvider()),
           ChangeNotifierProvider(create: (_) => FeedProvider()),
           ChangeNotifierProvider(create: (_) => SocialProvider()),
