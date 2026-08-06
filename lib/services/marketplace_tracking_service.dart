@@ -6,7 +6,7 @@ import 'firebase_service.dart';
 /// Tracks business interest, account type, and listing volume for growth
 /// decisions — without charging anyone during launch.
 class MarketplaceTrackingService {
-  MarketplaceTrackingService({FirebaseFirestore? this._firestore});
+  MarketplaceTrackingService({this._firestore});
 
   FirebaseFirestore? _firestore;
 

@@ -8,7 +8,7 @@ import 'firebase_service.dart';
 /// During launch, events are recorded with `status: deferred` / `amount: 0`
 /// so analytics work before payment processors are connected.
 class RevenueLedgerService {
-  RevenueLedgerService({FirebaseFirestore? this._firestore});
+  RevenueLedgerService({this._firestore});
 
   FirebaseFirestore? _firestore;
 
