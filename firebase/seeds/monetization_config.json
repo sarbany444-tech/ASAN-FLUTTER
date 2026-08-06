@@ -1,0 +1,226 @@
+{
+  "config": {
+    "monetization": {
+      "subscriptionsEnabled": false,
+      "paymentsEnforced": false,
+      "advertisingEnabled": false,
+      "commissionsEnabled": false,
+      "inAppPaymentsEnabled": false,
+      "verificationFeesEnabled": false,
+      "featuredListingsEnabled": false,
+      "premiumServicesEnabled": false,
+      "promotionsEnabled": false,
+      "freeCampaignActive": true,
+      "launchMode": true,
+      "currency": "EUR",
+      "comingSoonTitle": "Business Plans",
+      "comingSoonMessage": "Coming Soon — everything is free while we grow ASAN across Europe and the Middle East.",
+      "pricing": {
+        "verificationFee": 19.99,
+        "featuredListingDaily": 2.99,
+        "featuredListingWeekly": 14.99,
+        "featuredListingMonthly": 39.99,
+        "premiumServiceBase": 9.99,
+        "advertisingCpm": 5.0,
+        "commissionRate": 0.0
+      },
+      "limits": {
+        "personalMaxActiveListings": -1,
+        "businessMaxActiveListings": -1,
+        "categoryOverrides": {}
+      },
+      "plans": {
+        "personal_free": {
+          "name": "Personal",
+          "description": "Free forever for individuals.",
+          "priceMonthly": 0,
+          "priceYearly": 0,
+          "maxActiveListings": -1,
+          "includesVerification": false,
+          "includesFeaturedCredits": false,
+          "featuredCreditsPerMonth": 0,
+          "includesPremiumServices": false,
+          "sortOrder": 0,
+          "enabled": true
+        },
+        "business_starter": {
+          "name": "Business Starter",
+          "description": "For local shops and freelancers.",
+          "priceMonthly": 9.99,
+          "priceYearly": 99,
+          "maxActiveListings": 25,
+          "includesVerification": false,
+          "includesFeaturedCredits": true,
+          "featuredCreditsPerMonth": 2,
+          "includesPremiumServices": false,
+          "sortOrder": 1,
+          "enabled": true
+        },
+        "business_pro": {
+          "name": "Business Pro",
+          "description": "For growing companies across categories.",
+          "priceMonthly": 29.99,
+          "priceYearly": 299,
+          "maxActiveListings": 100,
+          "includesVerification": true,
+          "includesFeaturedCredits": true,
+          "featuredCreditsPerMonth": 10,
+          "includesPremiumServices": true,
+          "sortOrder": 2,
+          "enabled": true
+        },
+        "business_enterprise": {
+          "name": "Enterprise",
+          "description": "Unlimited reach for large operators.",
+          "priceMonthly": 99.99,
+          "priceYearly": 999,
+          "maxActiveListings": -1,
+          "includesVerification": true,
+          "includesFeaturedCredits": true,
+          "featuredCreditsPerMonth": 50,
+          "includesPremiumServices": true,
+          "sortOrder": 3,
+          "enabled": true
+        }
+      },
+      "categories": {
+        "buy_and_sell": {
+          "label": "Buy & Sell",
+          "enabled": true,
+          "supportsPersonal": true,
+          "supportsBusiness": true,
+          "supportsVerification": true,
+          "supportsFeatured": true,
+          "supportsPremiumServices": true
+        },
+        "cars": {
+          "label": "Cars",
+          "enabled": true,
+          "supportsPersonal": true,
+          "supportsBusiness": true,
+          "supportsVerification": true,
+          "supportsFeatured": true,
+          "supportsPremiumServices": true
+        },
+        "real_estate": {
+          "label": "Real Estate",
+          "enabled": true,
+          "supportsPersonal": true,
+          "supportsBusiness": true,
+          "supportsVerification": true,
+          "supportsFeatured": true,
+          "supportsPremiumServices": true
+        },
+        "jobs": {
+          "label": "Jobs",
+          "enabled": true,
+          "supportsPersonal": true,
+          "supportsBusiness": true,
+          "supportsVerification": true,
+          "supportsFeatured": true,
+          "supportsPremiumServices": true
+        },
+        "services": {
+          "label": "Services",
+          "enabled": true,
+          "supportsPersonal": true,
+          "supportsBusiness": true,
+          "supportsVerification": true,
+          "supportsFeatured": true,
+          "supportsPremiumServices": true
+        },
+        "companies": {
+          "label": "Companies",
+          "enabled": true,
+          "supportsPersonal": false,
+          "supportsBusiness": true,
+          "supportsVerification": true,
+          "supportsFeatured": true,
+          "supportsPremiumServices": true
+        },
+        "shops": {
+          "label": "Shops",
+          "enabled": true,
+          "supportsPersonal": false,
+          "supportsBusiness": true,
+          "supportsVerification": true,
+          "supportsFeatured": true,
+          "supportsPremiumServices": true
+        },
+        "restaurants": {
+          "label": "Restaurants",
+          "enabled": true,
+          "supportsPersonal": false,
+          "supportsBusiness": true,
+          "supportsVerification": true,
+          "supportsFeatured": true,
+          "supportsPremiumServices": true
+        },
+        "hotels": {
+          "label": "Hotels",
+          "enabled": true,
+          "supportsPersonal": false,
+          "supportsBusiness": true,
+          "supportsVerification": true,
+          "supportsFeatured": true,
+          "supportsPremiumServices": true
+        },
+        "doctors": {
+          "label": "Doctors",
+          "enabled": true,
+          "supportsPersonal": true,
+          "supportsBusiness": true,
+          "supportsVerification": true,
+          "supportsFeatured": true,
+          "supportsPremiumServices": true
+        },
+        "teachers": {
+          "label": "Teachers",
+          "enabled": true,
+          "supportsPersonal": true,
+          "supportsBusiness": true,
+          "supportsVerification": true,
+          "supportsFeatured": true,
+          "supportsPremiumServices": true
+        },
+        "courses": {
+          "label": "Courses",
+          "enabled": true,
+          "supportsPersonal": true,
+          "supportsBusiness": true,
+          "supportsVerification": true,
+          "supportsFeatured": true,
+          "supportsPremiumServices": true
+        },
+        "events": {
+          "label": "Events",
+          "enabled": true,
+          "supportsPersonal": true,
+          "supportsBusiness": true,
+          "supportsVerification": true,
+          "supportsFeatured": true,
+          "supportsPremiumServices": true
+        },
+        "freelancers": {
+          "label": "Freelancers",
+          "enabled": true,
+          "supportsPersonal": true,
+          "supportsBusiness": true,
+          "supportsVerification": true,
+          "supportsFeatured": true,
+          "supportsPremiumServices": true
+        }
+      }
+    }
+  },
+  "analytics": {
+    "platform_stats": {
+      "businessInterestCount": 0,
+      "businessUserCount": 0,
+      "personalUserCount": 0,
+      "totalListings": 0,
+      "activeListings": 0,
+      "listingCountByCategory": {}
+    }
+  }
+}

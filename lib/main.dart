@@ -2,6 +2,8 @@ import 'dart:ui' show PointerDeviceKind;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'core/monetization/marketplace_category.dart';
+import 'screens/monetization/business_plans_screen.dart';
 import 'services/firebase_service.dart';
 
 void main() async {
@@ -107,7 +109,7 @@ const featuredListings = <Listing>[
     title: 'Modern House',
     price: '£425,000',
     location: 'Manchester',
-    category: 'Property',
+    category: 'Real Estate',
     accent: AsanColors.green,
     icon: Icons.home_rounded,
   ),
@@ -123,7 +125,7 @@ const featuredListings = <Listing>[
     title: 'iPhone 14 Pro',
     price: '£320',
     location: 'Birmingham',
-    category: 'Electronics',
+    category: 'Buy & Sell',
     accent: AsanColors.purple,
     icon: Icons.phone_iphone_rounded,
   ),
@@ -131,7 +133,7 @@ const featuredListings = <Listing>[
     title: 'Nike Hoodie',
     price: '£45',
     location: 'Leeds',
-    category: 'Clothing',
+    category: 'Buy & Sell',
     accent: AsanColors.pink,
     icon: Icons.checkroom_rounded,
   ),
@@ -147,15 +149,16 @@ class CategoryChip {
 
 const homeCategories = <CategoryChip>[
   CategoryChip('all', 'All', Icons.apps_rounded, AsanColors.gold),
-  CategoryChip('electronics', 'Electronics', Icons.phone_iphone_rounded, AsanColors.purple),
+  CategoryChip('buy_and_sell', 'Buy & Sell', Icons.shopping_bag_rounded, AsanColors.purple),
   CategoryChip('cars', 'Cars', Icons.directions_car_rounded, AsanColors.blue),
-  CategoryChip('property', 'Property', Icons.home_rounded, AsanColors.green),
-  CategoryChip('clothing', 'Clothing', Icons.checkroom_rounded, AsanColors.pink),
-  CategoryChip('others', 'Others', Icons.grid_view_rounded, AsanColors.gold),
+  CategoryChip('real_estate', 'Real Estate', Icons.home_rounded, AsanColors.green),
+  CategoryChip('jobs', 'Jobs', Icons.work_rounded, AsanColors.cyan),
+  CategoryChip('services', 'Services', Icons.handyman_rounded, AsanColors.coral),
 ];
 
 class BrowseCategory {
-  const BrowseCategory(this.label, this.icon, this.accent, this.count);
+  const BrowseCategory(this.id, this.label, this.icon, this.accent, this.count);
+  final String id;
   final String label;
   final IconData icon;
   final Color accent;
@@ -163,9 +166,18 @@ class BrowseCategory {
 }
 
 const browseCategories = <BrowseCategory>[
-  BrowseCategory('Jobs', Icons.work_outline_rounded, AsanColors.cyan, 128),
-  BrowseCategory('Services & Handymen', Icons.handyman_outlined, AsanColors.coral, 86),
-  BrowseCategory('Others', Icons.grid_view_rounded, AsanColors.gold, 54),
+  BrowseCategory('jobs', 'Jobs', Icons.work_outline_rounded, AsanColors.cyan, 0),
+  BrowseCategory('services', 'Services', Icons.handyman_outlined, AsanColors.coral, 0),
+  BrowseCategory('companies', 'Companies', Icons.apartment_rounded, AsanColors.blue, 0),
+  BrowseCategory('shops', 'Shops', Icons.storefront_rounded, AsanColors.pink, 0),
+  BrowseCategory('restaurants', 'Restaurants', Icons.restaurant_rounded, AsanColors.coral, 0),
+  BrowseCategory('hotels', 'Hotels', Icons.hotel_rounded, AsanColors.purple, 0),
+  BrowseCategory('doctors', 'Doctors', Icons.medical_services_rounded, AsanColors.green, 0),
+  BrowseCategory('teachers', 'Teachers', Icons.school_rounded, AsanColors.cyan, 0),
+  BrowseCategory('courses', 'Courses', Icons.menu_book_rounded, AsanColors.gold, 0),
+  BrowseCategory('events', 'Events', Icons.event_rounded, AsanColors.pink, 0),
+  BrowseCategory('freelancers', 'Freelancers', Icons.handshake_rounded, AsanColors.blue, 0),
+  BrowseCategory('buy_and_sell', 'Buy & Sell', Icons.shopping_bag_outlined, AsanColors.purple, 0),
 ];
 
 // ─── Shell + bottom nav ───────────────────────────────────────────────────────
@@ -215,12 +227,7 @@ class _AsanShellState extends State<AsanShell> {
                   icon: Icons.chat_bubble_outline_rounded,
                   accent: AsanColors.pink,
                 ),
-                _PlaceholderScreen(
-                  title: 'Profile',
-                  subtitle: 'Your listings, saves & settings',
-                  icon: Icons.person_outline_rounded,
-                  accent: AsanColors.gold,
-                ),
+                ProfileTabScreen(),
               ],
             ),
           ),
@@ -991,6 +998,183 @@ class BrowseCategoryTile extends StatelessWidget {
             style: const TextStyle(color: AsanColors.muted, fontSize: 12),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class ProfileTabScreen extends StatelessWidget {
+  const ProfileTabScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(20, 16, 20, 120),
+      children: [
+        const Text(
+          'Profile',
+          style: TextStyle(
+            color: AsanColors.cream,
+            fontSize: 26,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        const SizedBox(height: 6),
+        const Text(
+          'Personal accounts are free. Business plans are Coming Soon.',
+          style: TextStyle(color: AsanColors.muted, fontSize: 13),
+        ),
+        const SizedBox(height: 20),
+        _ProfileActionTile(
+          icon: Icons.workspace_premium_rounded,
+          accent: AsanColors.gold,
+          title: 'Business Plans',
+          subtitle: 'Coming Soon — notify us for every category',
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (_) => const BusinessPlansScreen(),
+              ),
+            );
+          },
+        ),
+        const SizedBox(height: 10),
+        _ProfileActionTile(
+          icon: Icons.verified_outlined,
+          accent: AsanColors.cyan,
+          title: 'Verification',
+          subtitle: 'Free during launch across all categories',
+          onTap: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Verification is free during launch'),
+                backgroundColor: AsanColors.navyLight,
+                behavior: SnackBarBehavior.floating,
+              ),
+            );
+          },
+        ),
+        const SizedBox(height: 10),
+        _ProfileActionTile(
+          icon: Icons.grid_view_rounded,
+          accent: AsanColors.purple,
+          title: 'Categories',
+          subtitle: '${MarketplaceCategory.all.length} marketplace categories',
+          onTap: () {
+            showModalBottomSheet<void>(
+              context: context,
+              backgroundColor: AsanColors.navyLight,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              ),
+              builder: (ctx) {
+                return ListView(
+                  padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
+                  children: [
+                    const Text(
+                      'ASAN categories',
+                      style: TextStyle(
+                        color: AsanColors.cream,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    for (final c in MarketplaceCategory.all)
+                      ListTile(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(
+                          c.label,
+                          style: const TextStyle(color: AsanColors.cream),
+                        ),
+                        subtitle: Text(
+                          c.id,
+                          style: const TextStyle(
+                            color: AsanColors.muted,
+                            fontSize: 11,
+                          ),
+                        ),
+                      ),
+                  ],
+                );
+              },
+            );
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _ProfileActionTile extends StatelessWidget {
+  const _ProfileActionTile({
+    required this.icon,
+    required this.accent,
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final Color accent;
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: AsanColors.glass,
+      borderRadius: BorderRadius.circular(18),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(18),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: accent.withValues(alpha: 0.35)),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: accent.withValues(alpha: 0.14),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Icon(icon, color: accent),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        color: AsanColors.cream,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 15,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      subtitle,
+                      style: const TextStyle(
+                        color: AsanColors.muted,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(Icons.chevron_right_rounded, color: AsanColors.muted),
+            ],
+          ),
+        ),
       ),
     );
   }

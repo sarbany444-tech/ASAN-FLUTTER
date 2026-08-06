@@ -6,6 +6,7 @@ import '../../providers/auth_provider.dart';
 import '../../features/creator/presentation/creator_verification_screen.dart';
 import '../../models/enums.dart';
 import '../../services/daily_content_service.dart';
+import 'monetization_admin_screen.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
   const AdminDashboardScreen({super.key});
@@ -69,6 +70,20 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     ],
                   ),
                   const SizedBox(height: 24),
+                  ListTile(
+                    leading: const Icon(Icons.payments_outlined),
+                    title: const Text('Monetization Controls'),
+                    subtitle: const Text(
+                      'Subscriptions, prices, limits — Firebase remote',
+                    ),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const MonetizationAdminScreen(),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
                   Text('Moderation Queue', style: Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 8),
                   StreamBuilder<List<Map<String, dynamic>>>(

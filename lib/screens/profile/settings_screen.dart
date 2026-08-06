@@ -87,6 +87,16 @@ class SettingsScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
+            _SectionLabel(title: 'Business'),
+            const SizedBox(height: 8),
+            _GlassSettingsCard(
+              child: _GlassListTile(
+                title: 'Business Plans',
+                icon: Icons.workspace_premium_rounded,
+                onTap: () => context.push('/business-plans'),
+              ),
+            ),
+            const SizedBox(height: 20),
             _SectionLabel(title: 'Legal'),
             const SizedBox(height: 8),
             _GlassSettingsCard(
